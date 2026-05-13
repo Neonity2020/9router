@@ -123,11 +123,16 @@ function convertClaudeMessage(msg) {
     const parts = [];
     const toolCalls = [];
     const toolResults = [];
+    const reasoningParts = [];
 
     for (const block of msg.content) {
       switch (block.type) {
         case "text":
           parts.push({ type: "text", text: block.text });
+          break;
+
+        case "thinking":
+          if (block.thinking) reasoningParts.push(block.thinking);
           break;
 
         case "image":

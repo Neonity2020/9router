@@ -131,8 +131,20 @@ function convertGeminiToInternal(geminiBody, model, stream) {
   if (geminiBody.contents) {
     for (const content of geminiBody.contents) {
       const role = content.role === "model" ? "assistant" : "user";
-      const text = content.parts?.map(p => p.text).join("\n") || "";
-      messages.push({ role, content: text });
+      const parts = content.parts || [];
+      const text = parts
+        .filter(p => !p.thought)
+        .map(p => p.text)
+        .join("\n") || "";
+      const reasoningText = parts
+        .filter(p => p.thought)
+        .map(p => p.text)
+        .join("\n");
+      const message = { role, content: text };
+      if (role === "assistant" && reasoningText) {
+        message.reasoning_content = reasoningText;
+      }
+      messages.push(message);
     }
   }
 
@@ -202,8 +214,9 @@ function transformOpenAISSEToGeminiSSE(upstreamResponse, model) {
         const delta = choice.delta || {};
 
         const parts = [];
-        if (delta.reasoning_content) {
-          parts.push({ text: delta.reasoning_content, thought: true });
+        const reasoningText = delta.reasoning_content ?? delta.reason_result;
+        if (reasoningText) {
+          parts.push({ text: reasoningText, thought: true });
         }
         if (delta.content) {
           parts.push({ text: delta.content });
@@ -292,8 +305,9 @@ async function convertOpenAIResponseToGemini(response, model) {
   const { message, finish_reason } = choice;
 
   const parts = [];
-  if (message.reasoning_content) {
-    parts.push({ text: message.reasoning_content, thought: true });
+  const reasoningText = message.reasoning_content ?? message.reason_result;
+  if (reasoningText) {
+    parts.push({ text: reasoningText, thought: true });
   }
   parts.push({ text: message.content || "" });
 
