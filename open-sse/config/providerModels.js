@@ -417,6 +417,8 @@ export const PROVIDER_MODELS = {
   ],
   deepseek: [
     { id: "deepseek-v4-pro", name: "DeepSeek V4 Pro" },
+    { id: "deepseek-v4-pro-max", name: "DeepSeek V4 Pro Max", upstreamModelId: "deepseek-v4-pro" },
+    { id: "deepseek-v4-pro-none", name: "DeepSeek V4 Pro No Thinking", upstreamModelId: "deepseek-v4-pro" },
     { id: "deepseek-v4-flash", name: "DeepSeek V4 Flash" },
     { id: "deepseek-chat", name: "DeepSeek V3.2 Chat" },
     { id: "deepseek-reasoner", name: "DeepSeek V3.2 Reasoner" },
@@ -524,6 +526,16 @@ export const PROVIDER_MODELS = {
     { id: "mimo-v2.5", name: "MiMo V2.5" },
     { id: "mimo-v2-omni", name: "MiMo V2 Omni" },
     { id: "mimo-v2-flash", name: "MiMo V2 Flash" },
+  ],
+  "xiaomi-tokenplan": [
+    { id: "mimo-v2.5-pro", name: "MiMo V2.5 Pro" },
+    { id: "mimo-v2.5", name: "MiMo V2.5" },
+    { id: "mimo-v2-pro", name: "MiMo V2 Pro" },
+    { id: "mimo-v2-omni", name: "MiMo V2 Omni" },
+    { id: "mimo-v2-tts", name: "MiMo V2 TTS" },
+    { id: "mimo-v2.5-tts", name: "MiMo V2.5 TTS" },
+    { id: "mimo-v2.5-tts-voiceclone", name: "MiMo V2.5 TTS Voice Clone" },
+    { id: "mimo-v2.5-tts-voicedesign", name: "MiMo V2.5 TTS Voice Design" },
   ],
   hyperbolic: [
     { id: "Qwen/QwQ-32B", name: "QwQ 32B" },
