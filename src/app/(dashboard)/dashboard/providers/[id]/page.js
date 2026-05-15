@@ -300,9 +300,9 @@ export default function ProviderDetailPage() {
   };
 
   useEffect(() => {
-    fetchConnections();
-    fetchAliases();
-    fetchDisabledModels();
+    (async () => {
+      await Promise.all([fetchConnections(), fetchAliases(), fetchDisabledModels()]);
+    })();
   }, [fetchConnections, fetchAliases, fetchDisabledModels]);
 
   // Fetch suggested models from provider's public API (if configured)
@@ -458,7 +458,7 @@ export default function ProviderDetailPage() {
   };
 
   const selectedConnections = connections.filter((conn) => selectedConnectionIds.includes(conn.id));
-  const allSelected = connections.length > 0 && selectedConnectionIds.length === connections.length;
+  const allSelected = connections.length > 0 && selectedConnections.length === connections.length;
 
   const toggleSelectConnection = (connectionId) => {
     setSelectedConnectionIds((prev) => (
@@ -481,9 +481,7 @@ export default function ProviderDetailPage() {
     setBulkProxyPoolId("__none__");
   };
 
-  useEffect(() => {
-    setSelectedConnectionIds((prev) => prev.filter((id) => connections.some((conn) => conn.id === id)));
-  }, [connections]);
+
 
   const selectedProxySummary = (() => {
     if (selectedConnections.length === 0) return "";
@@ -901,7 +899,11 @@ export default function ProviderDetailPage() {
               )}
             </div>
             <p className="text-text-muted">
-              {connections.length} connection{connections.length === 1 ? "" : "s"}
+              {isFreeNoAuth ? (
+                <Badge variant="success" size="sm" dot>Ready</Badge>
+              ) : (
+                <>{connections.length} connection{connections.length === 1 ? "" : "s"}</>
+              )}
             </p>
           </div>
         </div>
