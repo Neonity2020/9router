@@ -58,6 +58,9 @@ const MODEL_SYNONYMS = {
      "gemini-3.7-flash-high": "gemini-3.7-flash-high",
     "gemini-3.7-flash-medium": "gemini-3.7-flash-medium",
     "gemini-3.7-flash-low": "gemini-3.7-flash-low",
+    "gemini-3.8-flash-high": "gemini-3.8-flash-high",
+    "gemini-3.8-flash-medium": "gemini-3.8-flash-medium",
+    "gemini-3.8-flash-low": "gemini-3.8-flash-low",
     "gemini-3.1-pro-high": "gemini-pro-agent",
     "gemini-3-pro-high": "gemini-pro-agent",
     "gemini-3-pro-low": "gemini-3.1-pro-low",
@@ -135,8 +138,9 @@ function extractModel(url, body) {
     }
     const model = urlModel || parsed.model || null;
     const cleanModelName = String(model).replace(/^models\//, "");
-    if (cleanModelName === "gemini-3.6-flash-tiered" || cleanModelName === "gemini-3.7-flash-tiered") {
-      const ver = cleanModelName.includes("3.7") ? "3.7" : "3.6";
+    const tieredMatch = cleanModelName.match(/^gemini-(\d+\.\d+)-flash-tiered$/);
+    if (tieredMatch) {
+      const ver = tieredMatch[1];
       const rawLevel = parsed.request?.generationConfig?.thinkingConfig?.thinkingLevel
         || parsed.generationConfig?.thinkingConfig?.thinkingLevel;
       const level = ["high", "medium", "low"].includes(String(rawLevel).toLowerCase())
